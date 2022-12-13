@@ -1,0 +1,6 @@
+process/output/**
+process/trimmed/**
+process/videos/**
+process/whisperQueue/**
+node_modules
+bak/

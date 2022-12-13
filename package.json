@@ -1,0 +1,18 @@
+{
+  "name": "yfw-pipeline",
+  "version": "1.0.0",
+  "description": "1. Need a cmd line interface to call with a youtube url that will download the url to videos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "yfw": "./src/yfw.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^9.4.1"
+  }
+}

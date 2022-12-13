@@ -67,18 +67,13 @@ function runWhisperOnFile(inputFile) {
     const args = [
       inputFile,
       "--model",
-      "small",
+      "base.en",
       "--output_dir",
       "./process/output",
     ];
-    console.log(args.join(" "));
-    const whisperProc = spawn("whisper", [
-      inputFile,
-      "--model",
-      "small",
-      "--output_dir",
-      "./process/output",
-    ]);
+    console.log("whisper" + " " + args.join(" "));
+
+    const whisperProc = spawn("whisper", args);
 
     whisperProc.stdout.on("data", (data) => {
       console.log(`stdout: ${data}`);
@@ -86,12 +81,12 @@ function runWhisperOnFile(inputFile) {
 
     whisperProc.stderr.on("data", (data) => {
       console.error(`stderr: ${data}`);
-    //   reject(data)
+      //   reject(data)
     });
 
     whisperProc.on("close", (code) => {
       console.log(`child process exited with code ${code}`);
-      resolve()
+      resolve();
     });
   });
 }

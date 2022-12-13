@@ -29,19 +29,15 @@ function getYoutubeVideoTitle(url, callBack) {
     youtubeVideoTitle.on("close", (code) => {
         console.log(`child process exited with code ${code}, title: ${videoTitle}`);
         if (videoTitle) {
-            callBack(videoTitle.toString());
+            callBack(stripSymbolsAndSpaces(videoTitle.toString()).trim());
         }
     });
 }
 
 function downloadYoutubeVideo(url, title) {
-    var newTitle = title
-        .replace(/[^\w\s]/gi, "")
-        .split(" ")
-        .join("");
     const youtubeDl = spawn("youtube-dl", [
         "-f best[ext=mp4]",
-        `-o`, `process/videos/${newTitle}.mp4`,
+        `-o`, `process/videos/${title}.mp4`,
         url,
     ]);
 

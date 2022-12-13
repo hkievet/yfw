@@ -57,7 +57,7 @@ function downloadYoutubeVideo(url, title) {
 
     youtubeDl.on("close", (code) => {
       console.log(`child process exited with code ${code}`);
-      resolve(title);
+      resolve(fp);
     });
   });
 }
@@ -101,7 +101,8 @@ function readAndParseSRT(videoName, start, end) {
     if (regex.test(line)) {
       const time = lines[i + 1];
       const text = lines[i + 2];
-      const [startTime, endTime] = time.split(" --> ");
+      let [startTime, endTime] = time.split(" --> ");
+
       segments.push({ text, startTime, endTime });
     }
   });
@@ -110,10 +111,26 @@ function readAndParseSRT(videoName, start, end) {
   const combinedText = requestedSegments
     .map((segment) => segment.text)
     .join(" ");
+
+  // start 1 second earlier and end 1 second earlier.
+  // 00:03:31 these are shaped like this:
+  let startTime = requestedSegments[0].startTime;
+  let [hhmmss, ms] = startTime.split(",");
+  let [hh, mm, ss] = hhmmss.split(":");
+  ss = String(Number.parseInt(ss) - 1).padStart(2, "0");
+  startTime = `${[hh, mm, ss].join(":")}.${ms}`;
+
+  let endTime = requestedSegments[requestedSegments.length - 1].endTime;
+  [hhmmss, ms] = endTime.split(",");
+  [hh, mm, ss] = endTime.split(":");
+  ss = String(Number.parseInt(ss) + 1).padStart(2, "0");
+  endTime = `${[hh, mm, ss].join(":")}.${ms}`;
+
+  console.log(startTime, " - ", endTime);
+
   return {
-    startTime: requestedSegments[0].startTime.split(",")[0],
-    endTime:
-      requestedSegments[requestedSegments.length - 1].endTime.split(",")[0],
+    startTime,
+    endTime,
     text: combinedText,
   };
 }

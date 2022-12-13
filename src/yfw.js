@@ -41,7 +41,7 @@ function downloadYoutubeVideo(url, title) {
         .join("");
     const youtubeDl = spawn("youtube-dl", [
         "-f best[ext=mp4]",
-        `-oprocess/videos/${newTitle}.mp4`,
+        `-o`, `process/videos/${newTitle}.mp4`,
         url,
     ]);
 

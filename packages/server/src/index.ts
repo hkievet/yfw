@@ -76,17 +76,17 @@ app.post("/start", async (req, res) => {
 app.use(
   "/static/trimmed",
   // todo use __dirname etc.,
-  express.static(path.join(trimmedVideosPath))
+  express.static(trimmedVideosPath)
 );
 app.use(
   "/static/transcripts",
   // todo use __dirname etc.,
-  express.static(path.join(generatedTranscriptsPath))
+  express.static(generatedTranscriptsPath)
 );
 app.use(
   "/static/videos",
   // todo use __dirname etc.,
-  express.static(path.join(downloadedVideosPath))
+  express.static(downloadedVideosPath)
 );
 
 /**

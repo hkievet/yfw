@@ -18,3 +18,9 @@ macdeps:
 upgrademacdeps:	
 	brew upgrade
 	pip install --upgrade --no-deps --force-reinstall git+https://github.com/openai/whisper.git
+
+clean:
+	rm -rf node_modules
+	rm -rf packages/client/node_modules
+	rm -rf packages/server/node_modules
+	rm -rf packages/yfw/node_modules

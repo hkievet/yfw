@@ -23,6 +23,11 @@
     "packages/*"
   ],
   "devDependencies": {
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.1"
+  },
+  "engines": {
+    "npm": ">=8.0.0 <9.0.0",
+    "node": ">=16.0.0 <17.0.0"
   }
 }

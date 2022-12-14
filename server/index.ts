@@ -54,6 +54,11 @@ app.use(
   express.static(path.join(trimmedVideosPath))
 );
 app.use(
+  "/static/transcripts",
+  // todo use __dirname etc.,
+  express.static(path.join(generatedTranscriptsPath))
+);
+app.use(
   "/static/videos",
   // todo use __dirname etc.,
   express.static(path.join(downloadedVideosPath))

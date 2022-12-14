@@ -5,9 +5,9 @@ import path from "node:path";
 const app = express();
 const PORT = 3333;
 
-const downloadedVideosPath = "./process/videos";
-const generatedTranscriptsPath = "./process/output";
-const trimmedVideosPath = "./process/trimmed";
+const downloadedVideosPath = "process/videos";
+const generatedTranscriptsPath = "process/output";
+const trimmedVideosPath = "process/trimmed";
 
 /**
  * returns a list of videos that are completed and available for trimming
@@ -43,6 +43,21 @@ app.get("/videos", async (req, res) => {
   let videos = await getAvailableVideos();
   res.send(videos);
 });
+
+/**
+ * Allow serving up of video files
+ */
+
+app.use(
+  "/static/trimmed",
+  // todo use __dirname etc.,
+  express.static(path.join(trimmedVideosPath))
+);
+app.use(
+  "/static/videos",
+  // todo use __dirname etc.,
+  express.static(path.join(downloadedVideosPath))
+);
 
 /**
  * Endpoint to start downloading a video via a url

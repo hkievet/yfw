@@ -1,4 +1,25 @@
-<script>
+<script lang="ts">
+	let urlInput: string = '';
+
+	async function postUrl() {
+		console.log(urlInput);
+
+		try {
+			const response = await fetch('http://localhost:3333/start', {
+				body: JSON.stringify({
+					url: urlInput
+				}),
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
 	import { onMount } from 'svelte';
 	import {
 		getVideos,
@@ -42,3 +63,8 @@
 		</ul>
 	{/each}
 {/if}
+
+<form on:submit={postUrl}>
+	<input bind:value={urlInput} />
+	<button type="submit">Submit</button>
+</form>

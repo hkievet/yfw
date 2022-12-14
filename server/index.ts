@@ -2,6 +2,7 @@ import express from "express";
 import fs from "node:fs";
 import path from "node:path";
 import cors from "cors";
+import { startFullProcess } from "../src/core";
 
 const app = express();
 const PORT = 3333;
@@ -11,6 +12,7 @@ const generatedTranscriptsPath = "process/output";
 const trimmedVideosPath = "process/trimmed";
 
 app.use(cors());
+app.use(express.json());
 
 /**
  * returns a list of videos that are completed and available for trimming
@@ -47,6 +49,18 @@ app.get("/videos", async (req, res) => {
   res.send(videos);
 });
 
+app.get("/", async (req, res) => {
+  res.send({ hello: "world" });
+});
+
+app.post("/start", async (req, res) => {
+  if (req.body.url) {
+    console.log(req.body.url);
+    await startFullProcess(req.body.url);
+  }
+  res.send({ success: "true" });
+});
+
 /**
  * Allow serving up of video files
  */
@@ -70,12 +84,5 @@ app.use(
 /**
  * Endpoint to start downloading a video via a url
  */
-app.post("/start", async (req, res) => {
-  res.send({ hello: "world" });
-});
 
 app.listen(PORT);
-
-app.get("/", async (req, res) => {
-  res.send({ hello: "world" });
-});

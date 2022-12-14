@@ -1,5 +1,4 @@
 #!/usr/bin/env ts-node
-console.log("bom")
 const command = require("commander");
 const program = new command.Command();
 const coreFunctions = require("./core")

@@ -4,9 +4,6 @@ devserver:
 devclient:
 	cd client && npm run dev
 
-
-
-
 install:
 	npm install -g typescript
 	npm install -g ts-node

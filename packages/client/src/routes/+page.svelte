@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Video from '$lib/video.svelte';
+	import { selectedVideoUrl } from '$lib/store';
 	let urlInput: string = '';
 
 	async function postUrl() {
@@ -39,30 +41,47 @@
 
 {#if $videos !== null}
 	<h1>Videos</h1>
-	{#each $videos as video}
-		<ul>
-			<li>{video}</li>
-		</ul>
-	{/each}
+	<ul>
+		{#each $videos as video}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li
+				on:click={() => {
+					selectedVideoUrl.set(`http://localhost:3333/static/videos/${video}`);
+				}}
+			>
+				{video}
+			</li>
+		{/each}
+	</ul>
 {/if}
 
 {#if $transcripts !== null}
 	<h1>Transcripts</h1>
-	{#each $transcripts as transcript}
-		<ul>
+	<ul>
+		{#each $transcripts as transcript}
 			<li>{transcript}</li>
-		</ul>
-	{/each}
+		{/each}
+	</ul>
 {/if}
 
 {#if $trimmedVideos !== null}
 	<h1>Trimmed</h1>
-	{#each $trimmedVideos as trimmedVideo}
-		<ul>
-			<li>{trimmedVideo}</li>
-		</ul>
-	{/each}
+	<ul>
+		{#each $trimmedVideos as trimmedVideo}
+			<li
+				on:click={() => {
+					selectedVideoUrl.set(
+						`http://localhost:3333/static/trimmed/${encodeURIComponent(trimmedVideo)}`
+					);
+				}}
+			>
+				{trimmedVideo}
+			</li>
+		{/each}
+	</ul>
 {/if}
+
+<Video />
 
 <form on:submit={postUrl}>
 	<input bind:value={urlInput} />

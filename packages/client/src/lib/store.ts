@@ -38,3 +38,4 @@ export async function getTrimmedVideos() {
 export const videos = writable<null | string[]>(null);
 export const transcripts = writable<null | string[]>(null);
 export const trimmedVideos = writable<null | string[]>(null);
+export const selectedVideoUrl = writable<null | string>(null);

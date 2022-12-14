@@ -73,7 +73,7 @@ export function runWhisperOnFile(inputFile: string): Promise<void> {
       "--model",
       "base.en",
       "--output_dir",
-      pathToProcessDir,
+      pathToProcessDir + "/output",
     ];
     console.log("whisper" + " " + args.join(" "));
 

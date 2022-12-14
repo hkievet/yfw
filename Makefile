@@ -1,5 +1,9 @@
-dev:
+devserver:
 	npm run server:watch
+
+devclient:
+	cd client && npm run dev
+
 
 install:
 	npm install -g typescript

@@ -15,7 +15,7 @@ function stripSymbolsAndSpaces(title) {
 
 async function getYoutubeVideoTitle(url) {
   return new Promise((resolve, reject) => {
-    const youtubeVideoTitle = spawn("youtube-dl", ["--get-title", url]);
+    const youtubeVideoTitle = spawn("yt-dlp", ["--get-title", url]);
     let videoTitle = "";
 
     youtubeVideoTitle.stdout.on("data", (data) => {
@@ -44,7 +44,7 @@ async function getYoutubeVideoTitle(url) {
 function downloadYoutubeVideo(url, title) {
   return new Promise((resolve, reject) => {
     const fp = `process/videos/${title}.mp4`;
-    const youtubeDl = spawn("youtube-dl", ["-f best[ext=mp4]", `-o`, fp, url]);
+    const youtubeDl = spawn("yt-dlp", ["-f best[ext=mp4]", `-o`, fp, url]);
 
     youtubeDl.stdout.on("data", (data) => {
       console.log(`stdout: ${data}`);
@@ -92,6 +92,7 @@ function runWhisperOnFile(inputFile) {
 }
 
 function readAndParseSRT(videoName, start, end) {
+  // should be figured out and calculatable...
   const srtFile = `process/output/${videoName}.mp4.srt`;
   const file = fs.readFileSync(srtFile).toString();
   const lines = file.split("\n");

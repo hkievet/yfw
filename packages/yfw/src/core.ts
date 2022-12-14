@@ -93,33 +93,40 @@ export function runWhisperOnFile(inputFile: string): Promise<void> {
   });
 }
 
-interface SRTLine {
+interface SRTLineSegment {
   text: string;
   startTime: string;
   endTime: string;
+}
+
+
+export function readSRT(videoName: string): SRTLineSegment[]{
+    // should be figured out and calculatable...
+    const srtFile = `process/output/${videoName}`;
+    const file = fs.readFileSync(srtFile).toString();
+    const lines = file.split("\n");
+    const segments: SRTLineSegment[] = [];
+    const regex = /^\d+$/;
+    lines.forEach((line: string, i: number) => {
+      if (regex.test(line)) {
+        const time = lines[i + 1];
+        const text = lines[i + 2];
+        let [startTime, endTime] = time.split(" --> ");
+  
+        segments.push({ text, startTime, endTime });
+      }
+    });
+  
+    return segments
 }
 
 export function readAndParseSRT(
   videoName: string,
   start: number,
   end: number
-): SRTLine {
-  // should be figured out and calculatable...
-  const srtFile = `process/output/${videoName}.mp4.srt`;
-  const file = fs.readFileSync(srtFile).toString();
-  const lines = file.split("\n");
-  const segments: SRTLine[] = [];
-  const regex = /^\d+$/;
-  lines.forEach((line: string, i: number) => {
-    if (regex.test(line)) {
-      const time = lines[i + 1];
-      const text = lines[i + 2];
-      let [startTime, endTime] = time.split(" --> ");
-
-      segments.push({ text, startTime, endTime });
-    }
-  });
-
+): SRTLineSegment {
+  const segments = readSRT(videoName);
+  // should be figured out and calculatable..
   const requestedSegments = segments.slice(start - 1, end);
   const combinedText = requestedSegments
     .map((segment) => segment.text)

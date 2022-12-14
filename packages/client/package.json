@@ -1,7 +1,11 @@
 {
-	"name": "spotify-client",
+	"name": "@yfw/client",
 	"version": "0.0.1",
 	"private": true,
+	"engines" : { 
+		"npm" : ">=8.0.0 <9.0.0",
+		"node" : ">=16.0.0 <17.0.0"
+	  },
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -35,6 +39,7 @@
 		"typescript": "^4.9.3",
 		"vite": "^3.2.4",
 		"vitest": "^0.25.3"
+		
 	},
 	"type": "module"
 }

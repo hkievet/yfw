@@ -2,7 +2,7 @@ import express from "express";
 import fs from "node:fs";
 import path from "node:path";
 import cors from "cors";
-import { startFullProcess } from "../src/core";
+import { readSRT, startFullProcess } from "@yfw/core/core";
 
 const app = express();
 const PORT = 3333;
@@ -33,6 +33,12 @@ async function getTrimmedVideos() {
   const files = fs.promises.readdir(trimmedVideosPath);
   return files;
 }
+
+app.get("/transcripts/:id", async (req, res) => {
+  console.log("boom")
+  let segments = await readSRT(req.params.id);
+  res.send(segments);
+});
 
 app.get("/trimmed", async (req, res) => {
   let trimmedVideoFiles = await getTrimmedVideos();
@@ -85,4 +91,5 @@ app.use(
  * Endpoint to start downloading a video via a url
  */
 
+console.log("Server running on http://localhost:" + PORT)
 app.listen(PORT);

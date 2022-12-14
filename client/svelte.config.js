@@ -10,7 +10,7 @@ const config = {
 		adapter: adapter()
 	},
 	files: {
-		lib: './src/lib'
+		lib: 'src/lib'
 	}
 };
 

@@ -1,6 +1,7 @@
 import express from "express";
 import fs from "node:fs";
 import path from "node:path";
+import cors from "cors";
 
 const app = express();
 const PORT = 3333;
@@ -8,6 +9,8 @@ const PORT = 3333;
 const downloadedVideosPath = "process/videos";
 const generatedTranscriptsPath = "process/output";
 const trimmedVideosPath = "process/trimmed";
+
+app.use(cors());
 
 /**
  * returns a list of videos that are completed and available for trimming

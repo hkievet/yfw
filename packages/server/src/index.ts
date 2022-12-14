@@ -7,9 +7,11 @@ import { readSRT, startFullProcess } from "@yfw/core/core";
 const app = express();
 const PORT = 3333;
 
-const downloadedVideosPath = "process/videos";
-const generatedTranscriptsPath = "process/output";
-const trimmedVideosPath = "process/trimmed";
+const pathToProcessDir = path.join(__dirname, "..", "..","..", "process")
+
+const downloadedVideosPath = pathToProcessDir + "/videos";
+const generatedTranscriptsPath = pathToProcessDir + "/output";
+const trimmedVideosPath = pathToProcessDir + "/trimmed";
 
 app.use(cors());
 app.use(express.json());
@@ -92,4 +94,5 @@ app.use(
  */
 
 console.log("Server running on http://localhost:" + PORT)
+console.log(path.join(__dirname, "..", "..","..", "process"))
 app.listen(PORT);

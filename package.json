@@ -9,7 +9,7 @@
     "build": "npm run build --workspace @yfw/core"
   },
   "bin": {
-    "yfw": "./src/yfw.js"
+    "yfw": "./packages/yfw/src/yfw.js"
   },
   "keywords": [],
   "author": "",

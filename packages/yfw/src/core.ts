@@ -1,8 +1,10 @@
 import command from "commander";
+import path from "path";
 
-const program = new command.Command();
 const { spawn } = require("child_process");
 const fs = require("node:fs");
+
+const pathToProcessDir = path.join(__dirname, "..", "..","..", "process")
 
 export function stripSymbolsAndSpaces(title: string) {
   var newTitle = title
@@ -45,7 +47,7 @@ export function downloadYoutubeVideo(
   title: string
 ): Promise<string> {
   return new Promise((resolve, reject) => {
-    const fp = `process/videos/${title}.mp4`;
+    const fp = `${pathToProcessDir}/videos/${title}.mp4`;
     const youtubeDl = spawn("yt-dlp", ["-f best[ext=mp4]", `-o`, fp, url]);
 
     youtubeDl.stdout.on("data", (data: any) => {
@@ -71,7 +73,7 @@ export function runWhisperOnFile(inputFile: string): Promise<void> {
       "--model",
       "base.en",
       "--output_dir",
-      "./process/output",
+      pathToProcessDir,
     ];
     console.log("whisper" + " " + args.join(" "));
 
@@ -102,7 +104,7 @@ interface SRTLineSegment {
 
 export function readSRT(videoName: string): SRTLineSegment[]{
     // should be figured out and calculatable...
-    const srtFile = `process/output/${videoName}`;
+    const srtFile = `${pathToProcessDir}/output/${videoName}`;
     const file = fs.readFileSync(srtFile).toString();
     const lines = file.split("\n");
     const segments: SRTLineSegment[] = [];
@@ -163,7 +165,7 @@ export function ffmpegMakeClip(
 ) {
   const words = text.split(" ");
   const fileName = words[0] + words[words.length - 1] + video + ".mp4";
-  const videoFp = `process/videos/${video}.mp4`;
+  const videoFp = `${pathToProcessDir}/videos/${video}.mp4`;
   const args = [
     "-i",
     videoFp,
@@ -171,7 +173,7 @@ export function ffmpegMakeClip(
     startTime,
     "-to",
     endTime,
-    `process/trimmed/${fileName}`,
+    `${pathToProcessDir}/trimmed/${fileName}`,
   ];
   console.log(args.join(" "));
   const ffmpegMakeClipProc = spawn("ffmpeg", args);

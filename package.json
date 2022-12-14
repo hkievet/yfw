@@ -2,9 +2,9 @@
   "name": "yfw-pipeline",
   "version": "1.0.0",
   "description": "1. Need a cmd line interface to call with a youtube url that will download the url to videos.",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:watch": "nodemon --watch ./server ./server/index.ts"
   },
   "bin": {
     "yfw": "./src/yfw.js"
@@ -13,6 +13,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "^9.4.1"
+    "commander": "^9.4.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.3.22",
+    "@swc/helpers": "^0.4.14",
+    "@types/express": "^4.17.15",
+    "@types/node": "^18.11.15",
+    "nodemon": "^2.0.20",
+    "regenerator-runtime": "^0.13.11",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4"
   }
 }

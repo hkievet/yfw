@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { makeVideoUrl } from '$lib/makeMp4Url';
-	import { selectedVideo } from '$lib/store';
+	import { selectedVideo } from '$lib/selectedVideo';
 	import { videoStore } from '$lib/stores/aggregateVideo';
 	import Video from '$lib/video.svelte';
 </script>

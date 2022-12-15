@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { trimVideo } from '$lib/actions';
-	import { selectedVideo } from '$lib/store';
+	import { selectedVideo } from '$lib/selectedVideo';
 	import { transcriptLineSelection } from '$lib/stores/transcriptLineSelection';
 	import Video from '$lib/video.svelte';
 	import { onMount } from 'svelte';
@@ -19,6 +19,7 @@
 	}
 
 	onMount(() => {
+		transcriptLineSelection.set(null);
 		transcriptLineSelection.subscribe((v) => {
 			if (v !== null) {
 				start = (v.start + 1).toString();

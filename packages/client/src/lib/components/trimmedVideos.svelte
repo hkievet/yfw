@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { selectedVideo } from '$lib/store';
+	import { selectedVideo } from '$lib/selectedVideo';
 	import { clipSequence } from '$lib/stores/clipSequence';
 	import { trimmedVideos } from '$lib/stores/trimmedVideos';
 	import Video from '$lib/video.svelte';

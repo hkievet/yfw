@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getTranscriptByUrl } from '$lib/stores/transcripts';
-	import { selectedVideo } from '$lib/store';
+	import { selectedVideo } from '$lib/selectedVideo';
 	import { transcriptLineSelection } from './stores/transcriptLineSelection';
 
 	type SelectionState = 'NONE' | 'SELECTING' | 'FINISHED';

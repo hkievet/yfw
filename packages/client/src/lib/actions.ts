@@ -1,4 +1,5 @@
 import { makeTrimmedUrl } from './makeMp4Url';
+import { getVideos } from './stores/videos';
 
 export async function postUrl(url: string) {
 	try {
@@ -12,6 +13,7 @@ export async function postUrl(url: string) {
 			},
 			method: 'POST'
 		});
+		getVideos();
 	} catch (e) {
 		console.error(e);
 		throw e;

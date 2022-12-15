@@ -43,7 +43,7 @@ export function timeStampToMilliseconds(timeStamp: TimeStamp): number {
  * @param ms
  * @returns
  */
-export function msToTimeStamp(ms: number): TimeStamp {
+export function timeStampFromMs(ms: number): TimeStamp {
   let milliseconds = ms % 1000;
   ms -= milliseconds;
   let seconds = (ms % (60 * 1000)) / 1000;
@@ -59,29 +59,10 @@ export function msToTimeStamp(ms: number): TimeStamp {
   };
 }
 
-export function addTime(timeStamp: TimeStamp, ms: number) {
-  const { hours, minutes, seconds, milliseconds } = timeStamp;
-  const newMs = milliseconds + ms;
-  return {
-    hours,
-    minutes,
-    seconds: seconds + Math.floor(newMs / 1000),
-    milliseconds: newMs % 1000,
-  };
+export function addTimeToTimeStamp(timeStamp: TimeStamp, ms: number) {
+  return timeStampFromMs(timeStampToMilliseconds(timeStamp) + ms);
 }
 
-export function subtractTime(timeStamp: TimeStamp, ms: number) {
-  let { hours, minutes, seconds, milliseconds } = timeStamp;
-  const newMs = milliseconds - ms;
-  if (newMs < 0) {
-    seconds--;
-    if (seconds < 0) {
-    }
-  }
-  return {
-    hours,
-    minutes,
-    seconds: seconds + Math.floor(newMs / 1000),
-    milliseconds: newMs % 1000,
-  };
+export function subtractTimefromTimeStamp(timeStamp: TimeStamp, ms: number) {
+  return addTimeToTimeStamp(timeStamp, -ms);
 }

@@ -6,6 +6,10 @@ import { ffmpegMakeClip } from "./ffmpeg-make-clip";
 import { getIntervalFromSRT } from "./get-interval-from-srt";
 import { getVideoTitle } from "./get-video-title";
 import { runWhisperOnFile } from "./run-whisper-on-file";
+import {
+  addTimeToTimeStamp,
+  subtractTimefromTimeStamp,
+} from "./timestamp-utils";
 
 /**
  * Produces a new clip in process/trimmed
@@ -18,11 +22,18 @@ import { runWhisperOnFile } from "./run-whisper-on-file";
 export async function trimVideo(
   video: VideoID,
   start: number,
-  end: number
+  end: number,
+  startBuffer: number = 1000,
+  endBuffer: number = 1000
 ): Promise<string> {
   const { startTime, endTime, text } = getIntervalFromSRT(video, start, end);
-  // add
-  return await ffmpegMakeClip(video, startTime, endTime, text);
+
+  return await ffmpegMakeClip(
+    video,
+    subtractTimefromTimeStamp(startTime, startBuffer),
+    addTimeToTimeStamp(endTime, endBuffer),
+    text
+  );
 }
 
 export async function startFullProcess(url: string) {

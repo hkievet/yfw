@@ -6,6 +6,7 @@
 	import TrimmedVideos from '$lib/components/trimmedVideos.svelte';
 	import VideoDownloader from '$lib/components/videoDownloader.svelte';
 	import ClipJoiner from '$lib/components/clipJoiner.svelte';
+	import { selectedVideo } from '$lib/selectedVideo';
 </script>
 
 <div class="flex flex-row gap-x-2">
@@ -16,11 +17,15 @@
 	</div>
 	<div>
 		<!-- <p>${$selectedVideoUrl}</p> -->
-		<Transcripts />
+		{#key $selectedVideo?.videoUrl}
+			<Transcripts />
+		{/key}
 	</div>
 	<div>
-		<VideoTrimmer />
-		<TrimmedVideos />
-		<ClipJoiner />
+		{#key $selectedVideo?.videoUrl}
+			<VideoTrimmer />
+			<TrimmedVideos />
+			<ClipJoiner />
+		{/key}
 	</div>
 </div>

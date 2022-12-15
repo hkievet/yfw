@@ -2,7 +2,7 @@ import express from "express";
 import fs from "node:fs";
 import path from "node:path";
 import cors from "cors";
-import { startFullProcess, trimVideo } from "@yfw/core/core";
+import { ensureProcessDirs, startFullProcess, trimVideo } from "@yfw/core/core";
 import { getSRTFromVideo } from "@yfw/core/core/get-srt-from-video";
 import { joinClips } from "@yfw/core/core/ffmpeg-join-clips";
 import { aggregateVideosPath } from "@yfw/core/core/constants";
@@ -138,4 +138,5 @@ app.use(
 
 console.log("Server running on http://localhost:" + PORT);
 console.log(path.join(__dirname, "..", "..", "..", "process"));
+ensureProcessDirs();
 app.listen(PORT);

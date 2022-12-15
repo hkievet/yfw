@@ -1,6 +1,3 @@
-import command from "commander";
-import path from "path";
-import { pathToProcessDir } from "./constants";
 import { downloadYoutubeVideo } from "./download-youtube-video";
 import { ffmpegMakeClip } from "./ffmpeg-make-clip";
 import { getIntervalFromSRT } from "./get-interval-from-srt";
@@ -10,6 +7,7 @@ import {
   addTimeToTimeStamp,
   subtractTimefromTimeStamp,
 } from "./timestamp-utils";
+import { ensureProcessDirs } from "./data-access/ensure-process-dirs";
 
 /**
  * Produces a new clip in process/trimmed
@@ -47,3 +45,5 @@ export async function startFullProcess(url: string): Promise<string> {
     throw e;
   }
 }
+
+export { ensureProcessDirs };

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { makeTrimmedUrl } from '$lib/makeMp4Url';
 	import { selectedVideo } from '$lib/store';
+	import { clipSequence } from '$lib/stores/clipSequence';
+	import { trimmedVideos } from '$lib/stores/trimmedVideos';
 	import Video from '$lib/video.svelte';
 
 	let selectedTrimmedVideo: string = '';
@@ -10,9 +11,14 @@
 	<h1>Trimmed</h1>
 	<ul>
 		{#each $selectedVideo.trimmedUrls as trimmedVideo}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<li
 				on:click={() => {
-					selectedTrimmedVideo = makeTrimmedUrl(trimmedVideo);
+					clipSequence.update((old) => {
+						const newSequence = [...old];
+						newSequence.push(trimmedVideo);
+						return newSequence;
+					});
 				}}
 			>
 				{trimmedVideo}

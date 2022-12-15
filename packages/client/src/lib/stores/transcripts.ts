@@ -15,7 +15,6 @@ export async function getTranscripts() {
 }
 
 export async function getTranscriptByUrl(url?: string | null): Promise<SRTLineSegment[] | null> {
-	console.log(url);
 	if (!url) {
 		return null;
 	}

@@ -3,11 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import cors from "cors";
 import { startFullProcess, trimVideo } from "@yfw/core/core";
-import {
-  msToTimeStamp,
-  timeStampToMilliseconds,
-} from "@yfw/core/core/timestamp-utils";
 import { getSRTFromVideo } from "@yfw/core/core/get-srt-from-video";
+import { joinClips } from "@yfw/core/core/ffmpeg-join-clips";
+import { aggregateVideosPath } from "@yfw/core/core/constants";
 
 const app = express();
 const PORT = 3333;
@@ -83,6 +81,18 @@ app.post("/trimVideo", async (req, res) => {
     }
   }
 });
+
+app.post("/joinClips", async (req, res) => {
+  const { clips, name } = req.body;
+  if (clips.length) {
+    const fp = await joinClips(clips, name);
+    if (fp) {
+      const aggregateVideoId = fp.split("/")[fp.split("/").length - 1];
+      res.send({ aggregateUrl: aggregateVideoId });
+    }
+  }
+});
+
 /**
  * Allow serving up of video files
  */
@@ -101,6 +111,11 @@ app.use(
   "/static/videos",
   // todo use __dirname etc.,
   express.static(downloadedVideosPath)
+);
+app.use(
+  "/static/aggregate",
+  // todo use __dirname etc.,
+  express.static(aggregateVideosPath)
 );
 
 /**

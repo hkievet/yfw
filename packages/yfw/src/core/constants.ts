@@ -11,3 +11,8 @@ export const pathToProcessDir = path.join(
   "..",
   "process"
 );
+
+export const downloadedVideosPath = pathToProcessDir + "/videos";
+export const generatedTranscriptsPath = pathToProcessDir + "/output";
+export const trimmedVideosPath = pathToProcessDir + "/trimmed";
+export const aggregateVideosPath = pathToProcessDir + "/aggregate";

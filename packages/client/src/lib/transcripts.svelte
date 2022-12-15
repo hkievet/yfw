@@ -5,12 +5,13 @@
 	$: transcriptLines = getTranscriptByUrl($selectedVideo?.videoUrl);
 </script>
 
-<p>{$selectedVideo?.transcriptUrl}</p>
-
 {#await transcriptLines then lines}
 	{#if lines}
+		<h2>{$selectedVideo?.transcriptUrl}</h2>
 		{#each lines as line, i}
 			<p>{i + 1}. {line.text}</p>
 		{/each}
+	{:else}
+		<p>Select a video.</p>
 	{/if}
 {/await}

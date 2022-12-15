@@ -11,6 +11,8 @@
 		{#each $videoStore as video}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<li
+				class="hover:cursor-pointer hover:bg-h11ywhite"
+				class:selected={$selectedVideo?.videoUrl === video.videoUrl}
 				on:click={() => {
 					selectedVideo.set(video);
 				}}
@@ -24,3 +26,9 @@
 {#if selectedVideo && $selectedVideo?.videoUrl}
 	<Video videoUrl={makeVideoUrl($selectedVideo.videoUrl)} />
 {/if}
+
+<style lang="postcss">
+	li.selected {
+		@apply font-bold;
+	}
+</style>

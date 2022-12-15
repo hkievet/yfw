@@ -2,5 +2,6 @@ process/output/**
 process/trimmed/**
 process/videos/**
 process/whisperQueue/**
+process/aggregate/**
 node_modules
 bak/

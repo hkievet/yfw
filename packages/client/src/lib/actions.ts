@@ -12,7 +12,6 @@ export async function postUrl(url: string) {
 			},
 			method: 'POST'
 		});
-		console.log('finished');
 	} catch (e) {
 		console.error(e);
 		throw e;
@@ -20,7 +19,6 @@ export async function postUrl(url: string) {
 }
 
 export async function trimVideo(url: string, start: number, end: number): Promise<string> {
-	console.log('bam');
 	try {
 		const response = await fetch('http://localhost:3333/trimVideo', {
 			body: JSON.stringify({
@@ -40,4 +38,28 @@ export async function trimVideo(url: string, start: number, end: number): Promis
 		console.error(e);
 		throw e;
 	}
+}
+
+export async function joinClips(videoIds: string[], outputName: string): Promise<string> {
+	if (outputName && videoIds.length) {
+		try {
+			const response = await fetch('http://localhost:3333/joinClips', {
+				body: JSON.stringify({
+					clips: videoIds,
+					name: outputName
+				}),
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			});
+			const data = await response.json();
+			return data.aggregateUrl;
+		} catch (e) {
+			console.error(e);
+			throw e;
+		}
+	}
+	return '';
 }

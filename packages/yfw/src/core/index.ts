@@ -36,12 +36,14 @@ export async function trimVideo(
   );
 }
 
-export async function startFullProcess(url: string) {
+export async function startFullProcess(url: string): Promise<string> {
   try {
     const title = await getVideoTitle(url);
     const fp = await downloadYoutubeVideo(url, title);
     const finished = await runWhisperOnFile(fp);
+    return title;
   } catch (e) {
     console.error(e);
+    throw e;
   }
 }

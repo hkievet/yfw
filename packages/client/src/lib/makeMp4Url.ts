@@ -1,4 +1,4 @@
-export function makeTrimmedUrl(url: string) {
+export function makeTrimmedUrl(url: string): string {
 	return `http://localhost:3333/static/trimmed/${encodeURIComponent(url)}`;
 }
 

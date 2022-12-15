@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
+	import { makeVideoUrl } from '$lib/makeMp4Url';
 	import { selectedVideo } from '$lib/store';
 	import { videoStore } from '$lib/stores/aggregateVideo';
+	import Video from '$lib/video.svelte';
 </script>
 
 {#if $videoStore !== null}
@@ -17,4 +19,8 @@
 			</li>
 		{/each}
 	</ul>
+{/if}
+
+{#if selectedVideo && $selectedVideo?.videoUrl}
+	<Video videoUrl={makeVideoUrl($selectedVideo.videoUrl)} />
 {/if}

@@ -31,6 +31,7 @@
 	import { videoStore } from '$lib/stores/aggregateVideo';
 	import VideoSelector from '$lib/components/videoSelector.svelte';
 	import VideoTrimmer from '$lib/components/videoTrimmer.svelte';
+	import TrimmedVideos from '$lib/components/trimmedVideos.svelte';
 	console.log($videoStore);
 
 	onMount(() => {
@@ -57,5 +58,6 @@
 	</div>
 	<div>
 		<VideoTrimmer />
+		<TrimmedVideos />
 	</div>
 </div>

@@ -12,12 +12,14 @@ export async function postUrl(url: string) {
 			},
 			method: 'POST'
 		});
+		console.log('finished');
 	} catch (e) {
 		console.error(e);
+		throw e;
 	}
 }
 
-export async function trimVideo(url: string, start: number, end: number) {
+export async function trimVideo(url: string, start: number, end: number): Promise<string> {
 	console.log('bam');
 	try {
 		const response = await fetch('http://localhost:3333/trimVideo', {
@@ -36,5 +38,6 @@ export async function trimVideo(url: string, start: number, end: number) {
 		return makeTrimmedUrl(data.trimUrl);
 	} catch (e) {
 		console.error(e);
+		throw e;
 	}
 }

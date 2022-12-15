@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { trimVideo } from '$lib/actions';
 	import { selectedVideo } from '$lib/store';
+	import { transcriptLineSelection } from '$lib/stores/transcriptLineSelection';
 	import Video from '$lib/video.svelte';
+	import { onMount } from 'svelte';
 
 	let start: string = '';
 	let end: string = '';
@@ -15,6 +17,15 @@
 			outputUrl = await trimVideo($selectedVideo?.videoUrl, startIndex, endIndex);
 		}
 	}
+
+	onMount(() => {
+		transcriptLineSelection.subscribe((v) => {
+			if (v !== null) {
+				start = (v.start + 1).toString();
+				end = (v.end + 1).toString();
+			}
+		});
+	});
 </script>
 
 {#if $selectedVideo}

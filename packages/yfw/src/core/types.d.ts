@@ -1,0 +1,1 @@
+type VideoID = string;

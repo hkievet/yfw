@@ -2,7 +2,12 @@ import express from "express";
 import fs from "node:fs";
 import path from "node:path";
 import cors from "cors";
-import { readSRT, startFullProcess, trimVideo } from "@yfw/core/core";
+import { startFullProcess, trimVideo } from "@yfw/core/core";
+import {
+  msToTimeStamp,
+  timeStampToMilliseconds,
+} from "@yfw/core/core/timestamp-utils";
+import { getSRTFromVideo } from "@yfw/core/core/get-srt-from-video";
 
 const app = express();
 const PORT = 3333;
@@ -37,7 +42,7 @@ async function getTrimmedVideos() {
 }
 
 app.get("/transcripts/:id", async (req, res) => {
-  let segments = await readSRT(req.params.id);
+  let segments = await getSRTFromVideo(req.params.id);
   res.send(segments);
 });
 
@@ -78,7 +83,6 @@ app.post("/trimVideo", async (req, res) => {
     }
   }
 });
-
 /**
  * Allow serving up of video files
  */

@@ -1434,17 +1434,17 @@
     "js-yaml" "^3.10.0"
     "tslib" "^2.4.0"
 
-"@yfw/client@file:/Users/hunterkievet/Coding/yfw/packages/client":
+"@yfw/client@file:/Users/hkievet/Coding/yfw-pipeline/packages/client":
   "resolved" "file:packages/client"
   "version" "0.0.1"
 
-"@yfw/core@file:/Users/hunterkievet/Coding/yfw/packages/yfw":
+"@yfw/core@file:/Users/hkievet/Coding/yfw-pipeline/packages/yfw":
   "resolved" "file:packages/yfw"
   "version" "1.0.0"
   dependencies:
     "yfw" "file:yfw"
 
-"@yfw/server@file:/Users/hunterkievet/Coding/yfw/packages/server":
+"@yfw/server@file:/Users/hkievet/Coding/yfw-pipeline/packages/server":
   "resolved" "file:packages/server"
   "version" "1.0.0"
 

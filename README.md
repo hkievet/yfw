@@ -1,7 +1,5 @@
 # Work In Progress :hammer:
 
-
-
 ## Instructions
 
 ### Prerequisites
@@ -10,14 +8,13 @@ The following programs should be installed:
 
 - [whisper](https://github.com/openai/whisper)
 - [youtube-dl](https://github.com/ytdl-org/youtube-dl)
-    - use [yt-dlt] fork instead.  Much faster rates `brew install yt-dlt`
+  - use [yt-dlt] fork instead. Much faster rates `brew install yt-dlt`
 - [ffmpeg](https://ffmpeg.org/)
-    - `brew install ffmpeg`
+  - `brew install ffmpeg`
 
 ## Slow rates with Youtube-DL
 
 https://github.com/ytdl-org/youtube-dl/issues/30102
-
 
 ## Setup && API (as of 528487c03710b3627ec2219a43cbc5761e594adf)
 
@@ -71,7 +68,6 @@ yfw trimVideo --video CharliebitmyfingerORIGINAL --start 3 --end 3
 
 1. Need a cmd line interface to call with a youtube url that will download the url to videos.
 
-
 Use commander...
 
 ## Vision
@@ -84,4 +80,13 @@ graph TD;
     E-->F[Combine each whisper output into master output]
     F-->G[Identify clips you want, capture timeframe...]
     G-->|Find a quote you like?|H[run ffmpeg command that cuts original video at timestamps and produces a snippet video without having to use premiere alt-up clipping]
+```
+
+---
+
+```mermaid
+graph TD;
+A[Start]-->B[Add a Video via YouTube Url]
+A[Start]-->C[Trim an Existing Video]
+A[Start]-->D[View a downloaded video or a trimmed video]
 ```

@@ -40,8 +40,12 @@ async function getTrimmedVideos() {
 }
 
 app.get("/transcripts/:id", async (req, res) => {
-  let segments = await getSRTFromVideo(req.params.id);
-  res.send(segments);
+  try {
+    let segments = await getSRTFromVideo(req.params.id);
+    res.send(segments);
+  } catch {
+    res.sendStatus(404);
+  }
 });
 
 app.get("/trimmed", async (req, res) => {
@@ -64,11 +68,16 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/start", async (req, res) => {
-  if (req.body.url) {
-    console.log(req.body.url);
-    await startFullProcess(req.body.url);
+  try {
+    if (req.body.url) {
+      console.log(req.body.url);
+      await startFullProcess(req.body.url);
+    }
+    res.send({ success: "true" });
+  } catch (e) {
+    res.status(500);
+    res.send();
   }
-  res.send({ success: "true" });
 });
 
 app.post("/trimVideo", async (req, res) => {
@@ -83,13 +92,18 @@ app.post("/trimVideo", async (req, res) => {
 });
 
 app.post("/joinClips", async (req, res) => {
-  const { clips, name } = req.body;
-  if (clips.length) {
-    const fp = await joinClips(clips, name);
-    if (fp) {
-      const aggregateVideoId = fp.split("/")[fp.split("/").length - 1];
-      res.send({ aggregateUrl: aggregateVideoId });
+  try {
+    const { clips, name } = req.body;
+    if (clips.length) {
+      const fp = await joinClips(clips, name);
+      if (fp) {
+        const aggregateVideoId = fp.split("/")[fp.split("/").length - 1];
+        res.send({ aggregateUrl: aggregateVideoId });
+      }
     }
+  } catch (e) {
+    res.status(500);
+    res.send();
   }
 });
 

@@ -1,8 +1,14 @@
 import { makeTrimmedUrl } from './makeMp4Url';
 import { getVideos } from './stores/videos';
+import { currentlyDownloading } from './stores/currentlyDownloading';
 
 export async function postUrl(url: string) {
 	try {
+		currentlyDownloading.update((downloading) => {
+			const newDownloading = [...downloading];
+			newDownloading.push(url);
+			return newDownloading;
+		});
 		const response = await fetch('http://localhost:3333/start', {
 			body: JSON.stringify({
 				url
@@ -12,6 +18,13 @@ export async function postUrl(url: string) {
 				'Content-Type': 'application/json'
 			},
 			method: 'POST'
+		});
+		currentlyDownloading.update((downloading) => {
+			const newDownloading = [...downloading];
+			newDownloading.filter((url) => {
+				url !== url;
+			});
+			return newDownloading;
 		});
 		getVideos();
 	} catch (e) {

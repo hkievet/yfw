@@ -1,4 +1,5 @@
 <script lang="ts">
+	import PosterSVG from '$lib/poster.svg';
 	import Transcripts from '$lib/transcripts.svelte';
 	import VideoSelector from '$lib/components/videoSelector.svelte';
 	import VideoTrimmer from '$lib/components/videoTrimmer.svelte';
@@ -9,6 +10,7 @@
 
 <div class="flex flex-row gap-x-2">
 	<div>
+		<img src={PosterSVG} class="m-5" />
 		<VideoSelector />
 		<VideoDownloader />
 	</div>

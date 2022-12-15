@@ -11,7 +11,10 @@ const config = {
 	},
 	files: {
 		lib: 'src/lib'
-	}
+	},
+	extensions: [
+		'.svelte', '.md'
+	]
 };
 
 export default config;

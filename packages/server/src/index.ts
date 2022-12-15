@@ -2,12 +2,12 @@ import express from "express";
 import fs from "node:fs";
 import path from "node:path";
 import cors from "cors";
-import { readSRT, startFullProcess } from "@yfw/core/core";
+import { readSRT, startFullProcess, trimVideo } from "@yfw/core/core";
 
 const app = express();
 const PORT = 3333;
 
-const pathToProcessDir = path.join(__dirname, "..", "..","..", "process")
+const pathToProcessDir = path.join(__dirname, "..", "..", "..", "process");
 
 const downloadedVideosPath = pathToProcessDir + "/videos";
 const generatedTranscriptsPath = pathToProcessDir + "/output";
@@ -37,7 +37,6 @@ async function getTrimmedVideos() {
 }
 
 app.get("/transcripts/:id", async (req, res) => {
-  console.log("boom")
   let segments = await readSRT(req.params.id);
   res.send(segments);
 });
@@ -69,6 +68,17 @@ app.post("/start", async (req, res) => {
   res.send({ success: "true" });
 });
 
+app.post("/trimVideo", async (req, res) => {
+  const { url, start, end } = req.body;
+  console.log("received request to trim ", url, "with", start, end);
+  if (url && start && end && start <= end) {
+    const fp = await trimVideo(url, start, end);
+    if (fp) {
+      res.send({ trimUrl: fp.split("/")[fp.split("/").length - 1] });
+    }
+  }
+});
+
 /**
  * Allow serving up of video files
  */
@@ -93,6 +103,6 @@ app.use(
  * Endpoint to start downloading a video via a url
  */
 
-console.log("Server running on http://localhost:" + PORT)
-console.log(path.join(__dirname, "..", "..","..", "process"))
+console.log("Server running on http://localhost:" + PORT);
+console.log(path.join(__dirname, "..", "..", "..", "process"));
 app.listen(PORT);

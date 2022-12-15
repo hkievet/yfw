@@ -4,7 +4,7 @@ import path from "path";
 const { spawn } = require("child_process");
 const fs = require("node:fs");
 
-const pathToProcessDir = path.join(__dirname, "..", "..","..", "process")
+const pathToProcessDir = path.join(__dirname, "..", "..", "..", "process");
 
 export function stripSymbolsAndSpaces(title: string) {
   var newTitle = title
@@ -101,25 +101,24 @@ interface SRTLineSegment {
   endTime: string;
 }
 
+export function readSRT(videoName: string): SRTLineSegment[] {
+  // should be figured out and calculatable...
+  const srtFile = `${pathToProcessDir}/output/${videoName}.srt`;
+  const file = fs.readFileSync(srtFile).toString();
+  const lines = file.split("\n");
+  const segments: SRTLineSegment[] = [];
+  const regex = /^\d+$/;
+  lines.forEach((line: string, i: number) => {
+    if (regex.test(line)) {
+      const time = lines[i + 1];
+      const text = lines[i + 2];
+      let [startTime, endTime] = time.split(" --> ");
 
-export function readSRT(videoName: string): SRTLineSegment[]{
-    // should be figured out and calculatable...
-    const srtFile = `${pathToProcessDir}/output/${videoName}`;
-    const file = fs.readFileSync(srtFile).toString();
-    const lines = file.split("\n");
-    const segments: SRTLineSegment[] = [];
-    const regex = /^\d+$/;
-    lines.forEach((line: string, i: number) => {
-      if (regex.test(line)) {
-        const time = lines[i + 1];
-        const text = lines[i + 2];
-        let [startTime, endTime] = time.split(" --> ");
-  
-        segments.push({ text, startTime, endTime });
-      }
-    });
-  
-    return segments
+      segments.push({ text, startTime, endTime });
+    }
+  });
+
+  return segments;
 }
 
 export function readAndParseSRT(
@@ -157,37 +156,54 @@ export function readAndParseSRT(
   };
 }
 
+export async function trimVideo(
+  video: string,
+  start: number,
+  end: number
+): Promise<string> {
+  const { startTime, endTime, text } = readAndParseSRT(video, start, end);
+  return await ffmpegMakeClip(video, startTime, endTime, text);
+}
+
 export function ffmpegMakeClip(
   video: string,
   startTime: string,
   endTime: string,
   text: string
-) {
-  const words = text.split(" ");
-  const fileName = words[0] + words[words.length - 1] + video + ".mp4";
-  const videoFp = `${pathToProcessDir}/videos/${video}.mp4`;
-  const args = [
-    "-i",
-    videoFp,
-    "-ss",
-    startTime,
-    "-to",
-    endTime,
-    `${pathToProcessDir}/trimmed/${fileName}`,
-  ];
-  console.log(args.join(" "));
-  const ffmpegMakeClipProc = spawn("ffmpeg", args);
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const words = text.split(" ");
+    const fileName = words[0] + words[words.length - 1] + video;
+    const videoFp = `${pathToProcessDir}/videos/${video}`;
+    const outputFp = `${pathToProcessDir}/trimmed/${fileName}`;
+    const args = [
+      "-i",
+      videoFp,
+      "-ss",
+      startTime,
+      "-to",
+      endTime,
+      `${pathToProcessDir}/trimmed/${fileName}`,
+    ];
+    console.log(args.join(" "));
+    const ffmpegMakeClipProc = spawn("ffmpeg", args);
 
-  ffmpegMakeClipProc.stdout.on("data", (data: any) => {
-    console.log(`stdout: ${data}`);
-  });
+    ffmpegMakeClipProc.stdout.on("data", (data: any) => {
+      console.log(`stdout: ${data}`);
+    });
 
-  ffmpegMakeClipProc.stderr.on("data", (data: any) => {
-    console.error(`stderr: ${data}`);
-  });
+    ffmpegMakeClipProc.stderr.on("data", (data: any) => {
+      console.error(`stderr: ${data}`);
+    });
 
-  ffmpegMakeClipProc.on("close", (code: string) => {
-    console.log(`child process exited with code ${code}`);
+    ffmpegMakeClipProc.on("close", (code: string) => {
+      console.log(`child process exited with code ${code}`);
+      if (code == "1") {
+        reject("error");
+      } else {
+        resolve(outputFp);
+      }
+    });
   });
 }
 

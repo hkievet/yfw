@@ -16,7 +16,9 @@ export function stripSymbolsAndSpaces(title: string) {
 
 export async function getYoutubeVideoTitle(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    const youtubeVideoTitle = spawn("yt-dlp", ["--get-title", url]);
+    const args = ["--get-title", url];
+    console.log("Running yt-dlp", args.join(" "));
+    const youtubeVideoTitle = spawn("yt-dlp", args);
     let videoTitle = "";
 
     youtubeVideoTitle.stdout.on("data", (data: any) => {
@@ -26,18 +28,18 @@ export async function getYoutubeVideoTitle(url: string): Promise<string> {
 
     youtubeVideoTitle.stderr.on("data", (data: any) => {
       console.error(`stderr: ${data}`);
-      reject("Error running Process");
     });
 
-    youtubeVideoTitle.on("close", (code: any) => {
+    youtubeVideoTitle.on("close", (code: number) => {
       console.log(
         `child process exited with code ${code}, title: ${videoTitle}`
       );
-      if (videoTitle) {
+      if (videoTitle && code === 0) {
         const fixedtitle = stripSymbolsAndSpaces(videoTitle.toString()).trim();
         resolve(fixedtitle);
+      } else {
+        reject("no video title");
       }
-      reject("no video title");
     });
   });
 }
@@ -48,7 +50,9 @@ export function downloadYoutubeVideo(
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const fp = `${pathToProcessDir}/videos/${title}.mp4`;
-    const youtubeDl = spawn("yt-dlp", ["-f best[ext=mp4]", `-o`, fp, url]);
+    const args = ["-f best[ext=mp4]", `-o`, fp, url];
+    console.log(`yt-dlp`, args.join(" "));
+    const youtubeDl = spawn("yt-dlp", args);
 
     youtubeDl.stdout.on("data", (data: any) => {
       console.log(`stdout: ${data}`);
@@ -56,12 +60,15 @@ export function downloadYoutubeVideo(
 
     youtubeDl.stderr.on("data", (data: any) => {
       console.error(`stderr: ${data}`);
-      reject(data);
     });
 
     youtubeDl.on("close", (code: any) => {
-      console.log(`child process exited with code ${code}`);
-      resolve(fp);
+      if (code === 0) {
+        console.log(`child process exited with code ${code}`);
+        resolve(fp);
+      } else {
+        reject("Failed to download youtube video");
+      }
     });
   });
 }
@@ -75,6 +82,7 @@ export function runWhisperOnFile(inputFile: string): Promise<void> {
       "--output_dir",
       pathToProcessDir + "/output",
     ];
+
     console.log("whisper" + " " + args.join(" "));
 
     const whisperProc = spawn("whisper", args);
@@ -88,9 +96,13 @@ export function runWhisperOnFile(inputFile: string): Promise<void> {
       //   reject(data)
     });
 
-    whisperProc.on("close", (code: string) => {
-      console.log(`child process exited with code ${code}`);
-      resolve();
+    whisperProc.on("close", (code: number) => {
+      if (code === 0) {
+        console.log(`child process exited with code ${code}`);
+        resolve();
+      } else {
+        reject("Failed to transcribe video");
+      }
     });
   });
 }
@@ -196,10 +208,10 @@ export function ffmpegMakeClip(
       console.error(`stderr: ${data}`);
     });
 
-    ffmpegMakeClipProc.on("close", (code: string) => {
+    ffmpegMakeClipProc.on("close", (code: number) => {
       console.log(`child process exited with code ${code}`);
-      if (code == "1") {
-        reject("error");
+      if (code === 1) {
+        reject("error trimming clip");
       } else {
         resolve(outputFp);
       }

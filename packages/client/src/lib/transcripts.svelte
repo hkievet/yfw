@@ -10,7 +10,7 @@
 {#await transcriptLines then lines}
 	{#if lines}
 		{#each lines as line, i}
-			<p>{i}. {line.text}</p>
+			<p>{i + 1}. {line.text}</p>
 		{/each}
 	{/if}
 {/await}

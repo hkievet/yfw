@@ -31,6 +31,7 @@
 
 {#if $selectedVideo}
 	<form on:submit={_trimVideo}>
+		<h3>Video Clipper</h3>
 		<p>
 			<label>Video</label>
 			{$selectedVideo?.videoUrl}

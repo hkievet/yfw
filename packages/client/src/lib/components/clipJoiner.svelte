@@ -12,6 +12,7 @@
 		aggregateVideoUrl = await joinClips($clipSequence, outputName);
 	}}
 >
+	<h3>Combine Videos</h3>
 	<ul>
 		{#each $clipSequence as clip, i}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->

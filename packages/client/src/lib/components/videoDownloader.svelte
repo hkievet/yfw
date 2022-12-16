@@ -6,6 +6,7 @@
 
 <div class="rounded-sm border-solid border-2 border-h11y-black">
 	<form on:submit={() => postUrl(urlInput)}>
+		<h3>Download Video</h3>
 		<input bind:value={urlInput} class="rounded-sm border-solid border-2 border-h11y-black" />
 		<button type="submit">Process URL</button>
 	</form>

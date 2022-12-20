@@ -1,5 +1,7 @@
 import { spawn } from "node:child_process";
+import { upsertVideo } from "../db";
 import { pathToProcessDir } from "./constants";
+import { stripSymbolsAndSpaces } from "./strip-symbols-and-spaces";
 
 /**
  * Downloads a video using yt-dlp
@@ -13,7 +15,19 @@ export function downloadYoutubeVideo(
   title: string
 ): Promise<string> {
   return new Promise((resolve, reject) => {
-    const fp = `${pathToProcessDir}/videos/${title}`;
+    const shortenedTitle =
+      stripSymbolsAndSpaces(title.toString()).trim() + ".mp4";
+    const fp = `${pathToProcessDir}/videos/${shortenedTitle}`;
+    try {
+      upsertVideo({
+        filepath: fp,
+        status: "downloading",
+        name: title,
+        sourceUrl: url,
+      });
+    } catch (e) {
+      console.error(" issue writing video to database");
+    }
     const args = ["-f best[ext=mp4]", `-o`, fp, url];
     console.log(`yt-dlp`, args.join(" "));
     const youtubeDl = spawn("yt-dlp", args);

@@ -4,11 +4,15 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "npx tsc"
   },
   "dependencies": {
-    "yfw": "file:yfw"
+    "@types/jest": "^29.2.4",
+    "@types/pg": "^8.6.5",
+    "jest": "^29.3.1",
+    "pg": "^8.8.0",
+    "ts-jest": "^29.0.3"
   },
   "keywords": [],
   "author": "",

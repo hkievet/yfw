@@ -16,3 +16,23 @@ export const downloadedVideosPath = pathToProcessDir + "/videos";
 export const generatedTranscriptsPath = pathToProcessDir + "/output";
 export const trimmedVideosPath = pathToProcessDir + "/trimmed";
 export const aggregateVideosPath = pathToProcessDir + "/aggregate";
+
+export interface ProcessFilePathConsts {
+  downloadedVideosPath: string;
+  generatedTranscriptsPath: string;
+  trimmedVideosPath: string;
+  aggregateVideosPath: string;
+  pathToProcessDir: string;
+}
+
+const processFilePaths = {
+  downloadedVideosPath,
+  generatedTranscriptsPath,
+  trimmedVideosPath,
+  aggregateVideosPath,
+  pathToProcessDir,
+};
+
+export function getProcessFilePaths(): ProcessFilePathConsts {
+  return { ...processFilePaths };
+}

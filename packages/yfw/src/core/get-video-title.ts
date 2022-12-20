@@ -1,5 +1,4 @@
 import { spawn } from "node:child_process";
-import { stripSymbolsAndSpaces } from "./strip-symbols-and-spaces";
 
 /**
  * This is going to produce the video identifier that will be used in all other functions.
@@ -27,9 +26,7 @@ export async function getVideoTitle(url: string): Promise<VideoID> {
         `child process exited with code ${code}, title: ${videoTitle}`
       );
       if (videoTitle && code === 0) {
-        const fixedtitle =
-          stripSymbolsAndSpaces(videoTitle.toString()).trim() + ".mp4";
-        resolve(fixedtitle);
+        resolve(videoTitle.toString());
       } else {
         reject("no video title");
       }

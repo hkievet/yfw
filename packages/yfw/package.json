@@ -14,10 +14,14 @@
     "pg": "^8.8.0",
     "ts-jest": "^29.0.3"
   },
+  "bin": {
+    "yfw": "lib/yfw.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/commander": "^2.12.2",
     "@types/node": "^18.11.15",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.1"

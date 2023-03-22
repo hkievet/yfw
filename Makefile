@@ -4,6 +4,9 @@ devserver:
 devclient:
 	cd client && npm run dev
 
+build-core:
+	npm run build -w @yfw/core
+
 install:
 	npm install -g typescript
 	npm install -g ts-node

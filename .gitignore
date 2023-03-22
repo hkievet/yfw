@@ -6,3 +6,4 @@ process/whisperQueue/**
 process/aggregate/**
 node_modules
 bak/
+lib/

@@ -4,9 +4,13 @@ const HOST = "localhost";
 const PORT = 5432;
 const USERNAME = "yfw";
 const PW = "yfw_password";
-const DB = "yfw";
 
-let client: Client;
+let client = new Client({
+  host: HOST,
+  port: PORT,
+  user: USERNAME,
+  password: PW,
+});
 
 export async function connect(): Promise<void> {
   if (!client) {
@@ -76,28 +80,34 @@ interface Video {
   status: "pending" | "downloading" | "finished";
 }
 
-export async function upsertVideo(video: Partial<Video>): Promise<void> {
+export async function addNewVideoUpload(video: Partial<Video>): Promise<void> {
   await connect();
-  const args = [video.filepath, video.name, video.sourceUrl, video.status];
   const sql = `INSERT INTO video (filepath, name, source_url, status) VALUES (
         $1,
         $2,
         $3,
         $4
     );`;
-  //   console.log(sql, args.join(","));
-  const result = await client.query(sql, [
-    video.filepath,
-    video.name,
-    video.sourceUrl,
-    video.status,
-  ]);
-  console.log(result);
+  const args = [video.filepath, video.name, video.sourceUrl, video.status];
+  const result = await client.query(sql, args);
+  return await end();
+}
+
+export async function updateVideoFinishedDownloading(
+  video: Partial<Video>
+): Promise<void> {
+  await connect();
+  const sql = `UPDATE video 
+  SET length = $1, status = 'finished'
+  WHERE sourceURL=$2`;
+  const args = [video.length, video.sourceUrl];
+  const result = await client.query(sql, args);
   return await end();
 }
 
 export async function dropVideoTable(): Promise<void> {
   const sql = `DROP TABLE IF EXISTS video`;
   await client.connect();
-  client.query(sql);
+  await client.query(sql);
+  await client.end();
 }

@@ -22,7 +22,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "private": true,
   "devDependencies": {
+    "@tsconfig/svelte": "^3.0.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.1"
   },

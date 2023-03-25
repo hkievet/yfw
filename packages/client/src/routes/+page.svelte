@@ -7,13 +7,11 @@
 	import VideoDownloader from '$lib/components/videoDownloader.svelte';
 	import ClipJoiner from '$lib/components/clipJoiner.svelte';
 	import { selectedVideo } from '$lib/selectedVideo';
-	import { H11YButton } from 'h11y-slc';
 </script>
 
 <div class="flex flex-row gap-x-2">
-	<H11YButton />
 	<div>
-		<img src={PosterSVG} class="m-5" />
+		<img src={PosterSVG} alt="yfw logo" class="m-5" />
 		<VideoSelector />
 		<VideoDownloader />
 	</div>
